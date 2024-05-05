@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <a id="home" data-route="/">home</a>
+  <a id="home" data-route="/profile">profile</a>
+  <a id="home" data-route="/mine">mine</a>
+
+  <p id="container">home</p>
+  <script>
+    const routes = [
+      {
+        path: '/',
+        title: 'home'
+      },
+       {
+        path: '/profile',
+        title: 'profile'
+      },
+       {
+        path: '/mine',
+        title: 'mine'
+      }
+    ]
+    document.body.addEventListener('click', (e) => {
+      const {target} = e;
+      const path = target.dataset.route;
+      const title = target.innerText;
+      routePushState(path, title);
+    })
+
+    function routePushState(path, title) {
+      window.history.pushState(null, '', path);
+      container.innerText = title;
+    }
+    window.addEventListener('popstate', (e) => {
+      const title = routes.find(item => item.path === window.location.pathname).title; 
+      container.innerText = title;
+    })
+  </script>
+</body>
+</html>

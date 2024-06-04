@@ -1,8 +1,8 @@
 <template>
   <div class="template-list-component">
     <a-row :gutter="16">
-      <a-col :span="6" v-for="item in list" :key="item.id" class="poster-item">
-        <router-link :to="{name: 'template', params: {id: item.id}}">
+      <a-col :span="6" v-for="(item,key) in list" :key="key" class="poster-item">
+        <router-link :to="{ name: 'template', params: { id: item.id }}">
           <a-card hoverable>
             <template v-slot:cover>
               <img :src="item.coverImg" v-if="item.coverImg" />
@@ -40,6 +40,7 @@
 <script lang="ts">
 import {defineComponent, PropType} from 'vue';
 import { TemplateProps } from '../store/template'
+
 export default defineComponent({
   name: 'template-list',
   props: {
@@ -48,6 +49,9 @@ export default defineComponent({
       required: true,
     },
   },
+  setup(props) {
+    console.log(props.list, 'list---')
+  }
 });
 </script>
 

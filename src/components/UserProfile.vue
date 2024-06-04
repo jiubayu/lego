@@ -1,5 +1,5 @@
 <template>
-  <router-link to="/" v-if="!user.isLogin">
+  <router-link to="/" v-if="!(user && user.isLogin)">
     <a-button 
       type="primary"  
       class="user-profile-component"
@@ -24,7 +24,6 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
-import axios from 'axios'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import { message } from 'ant-design-vue'

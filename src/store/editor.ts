@@ -2,6 +2,7 @@ import {v4 as uuidv4} from 'uuid';
 import {Module} from 'vuex';
 import {GlobalDataProps} from '.';
 import {TextComponentProps, AllComponentProps} from '@/defaultProps';
+import {textDefaultProps, imageDefaultProps} from 'lego-birks';
 
 export interface EditorProps {
   // 供中间渲染的组件列表
@@ -18,13 +19,20 @@ export interface ComponentData {
   id: string;
   // 业务组件名称 如l-text，l-image等
   name: string;
+  layerName?: string;
+  isHidden?: boolean;
+  isLocked?: boolean;
 }
 
 export const testComponents: ComponentData[] = [
   {
     id: uuidv4(),
     name: 'l-text',
+    layerName: '图层1',
+    isHidden: false,
+    isLocked: false,
     props: {
+      ...textDefaultProps,
       text: 'hello',
       fontSize: '20px',
       color: '#000000',
@@ -35,7 +43,11 @@ export const testComponents: ComponentData[] = [
   {
     id: uuidv4(),
     name: 'l-text',
+    layerName: '图层2',
+    isHidden: false,
+    isLocked: false,
     props: {
+      ...textDefaultProps,
       text: 'hello2',
       fontSize: '16px',
       fontWeight: 'bold',
@@ -46,12 +58,27 @@ export const testComponents: ComponentData[] = [
   {
     id: uuidv4(),
     name: 'l-text',
+    layerName: '图层3',
+    isHidden: false,
+    isLocked: false,
     props: {
+      ...textDefaultProps,
       text: 'hello3',
       fontSize: '24px',
       backgroundColor: 'yellow',
       actionType: 'url',
-      url: 'http://baidu.com',
+      // url: 'http://baidu.com',
+    },
+  },
+  {
+    id: uuidv4(),
+    name: 'l-image',
+    layerName: '图层4',
+    isHidden: false,
+    isLocked: false,
+    props: {
+      ...imageDefaultProps,
+      src: 'https://static.imooc-lego.com/upload-files/%E5%A4%B4%E5%83%8F1-508783.png',
     },
   },
 ];
@@ -76,17 +103,17 @@ const editor: Module<EditorProps, GlobalDataProps> = {
         (item: ComponentData) => item.id !== currId
       );
     },
-    updateComponent(state, props: {[key: string]: string} & {id: string}) {
-      const { id, ...restProps } = props;
+    updateComponent(state, {key, value, id, isRoot}) {
       const currentElement = state.components.find(
-        (item) => item.id === id
+        (item) => item.id === (id || state.currentElement)
       );
-      const {key, value} = restProps;
-      currentElement.props = {
-        ...currentElement.props,
-        [key]: value
-      };
-      console.log(id, restProps, state.components, 'state.components----');
+      if (currentElement) {
+        if (isRoot) {
+          (currentElement as any)[key] = value;
+        } else {
+          currentElement.props[key as keyof TextComponentProps] = value;
+        }
+      }
     },
     setActive(state, currentId: string) {
       state.currentId = currentId;

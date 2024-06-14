@@ -29,7 +29,8 @@
               v-for="component in components"
               :key="component.id"
               :id="component.id"
-              :active="component.id === (currentElement && currentElement.id)"
+              :active="component.id === (currentId)"
+              :hidden="component.isHidden"
               @setActive="setActive(component.id)"
             >
               <component :is="component.name" v-bind="component.props" />
@@ -47,16 +48,33 @@
         style="background: #fff"
         class="settings-panel"
       >
-        组件属性
-        <props-table
-          v-if="currentElement && currentElement.props"
-          :props="currentElement.props"
-          @change="handleChange"
-        ></props-table>
-        <pre>
-        {{ currentElement && currentElement.props }}
-      </pre
-        >
+        <a-tabs type="card" v-model="activePanel">
+          <a-tab-pane key="component" tab="属性设置" class="no-top-radius">
+            <div v-if="currentElement">
+              <props-table
+                v-if="!currentElement.isLocked"
+                :props="currentElement.props"
+                @change="handleChange"
+              ></props-table>
+              <div v-else>
+                <a-empty>
+                  <template #description>
+                    <p>该元素被锁定，无法编辑</p>
+                  </template>
+                </a-empty>
+              </div>
+              <pre> {{ currentElement && currentElement.props }}</pre>
+            </div>
+          </a-tab-pane>
+          <a-tab-pane key="layer" tab="图层设置">
+            <layer-list
+              :list="components"
+              :selectedId="currentId"
+              @change="handleChange"
+              @setActive="setActive"
+            />
+          </a-tab-pane>
+        </a-tabs>
       </a-layout-sider>
     </a-layout>
   </div>
@@ -64,26 +82,28 @@
 
 <script lang="ts">
 import {GlobalDataProps} from '@/store';
-import {computed, defineComponent} from 'vue';
+import {computed, defineComponent, ref} from 'vue';
 import {useStore} from 'vuex';
-import LText from '@/components/LText.vue';
+// import LText from '@/components/LText.vue';
 import ComponentList from '../components/ComponentList.vue';
 import defaultTemplates from '@/defaultTemplates';
 import {ComponentData} from '@/store/editor';
 import EditorWrapper from '../components/EditorWrapper.vue';
 import PropsTable from '@/components/PropsTable.vue';
+import LayerList from '../components/LayerList.vue';
 // import PropsTable from '@/components/PropsTable';
 import Uploader from '@/components/Uploader.vue';
 import {v4 as uuidv4} from 'uuid';
+
 export type TabType = 'component' | 'layer' | 'page';
 export default defineComponent({
   name: 'Editor',
   components: {
-    LText,
     ComponentList,
     EditorWrapper,
     PropsTable,
-    Uploader
+    Uploader,
+    LayerList,
   },
   setup() {
     const store = useStore<GlobalDataProps>();
@@ -92,7 +112,9 @@ export default defineComponent({
     const currentElement = computed<ComponentData | null>(
       () => store.getters.getCurrentComponent
     );
-    console.log(currentElement, 'currentElement----')
+    const activePanel = ref<TabType>('component');
+
+    // console.log(currentElement, 'currentElement----');
     const addItem = (props: any) => {
       store.commit('addComponent', {
         id: uuidv4(),
@@ -107,8 +129,8 @@ export default defineComponent({
       store.commit('setActive', id);
     };
     const handleChange = (e: any) => {
-      console.log(e,'e---')
-      store.commit("updateComponent", { id: currentId.value, ...e});
+      console.log(e, 'e---');
+      store.commit('updateComponent', {id: currentId.value, ...e});
     };
     return {
       components,
@@ -117,7 +139,9 @@ export default defineComponent({
       deleteItem,
       setActive,
       currentElement,
-      handleChange
+      handleChange,
+      activePanel,
+      currentId,
     };
   },
 });

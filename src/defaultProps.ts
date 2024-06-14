@@ -1,4 +1,12 @@
 import { mapValues, without } from 'lodash-es'
+
+export interface PageProps {
+  backgroundColor: string;
+  backgroundImage: string;
+  backgroundRepeat: string;
+  backgroundSize: string;
+  height: string;
+}
 export interface CommonComponentProps {
   // actions
   actionType: string;
@@ -48,7 +56,7 @@ export const commonDefaultProps: CommonComponentProps = {
   left: '0',
   top: '0',
   right: '0'
-}
+};
 export interface TextComponentProps extends CommonComponentProps {
   text: string;
   fontSize: string;
@@ -64,7 +72,7 @@ export interface TextComponentProps extends CommonComponentProps {
 export interface ImageComponentProps extends CommonComponentProps {
   src: string;
 }
-export type AllComponentProps = TextComponentProps & ImageComponentProps
+export type AllComponentProps = TextComponentProps & ImageComponentProps & PageProps;
 export const textDefaultProps: TextComponentProps = {
   // basic props - font styles
   text: '正文内容',

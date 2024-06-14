@@ -1,5 +1,5 @@
 <template>
-  <div class="edit-wrapper" @click="onItemClick(id)" :class="{active: active}">
+  <div class="edit-wrapper" @click="onItemClick(id)" :class="{active: active,}">
     <slot></slot>
   </div>
 </template>
@@ -15,12 +15,16 @@ export default defineComponent({
     active: {
       type: Boolean,
       default: false
+    },
+    isHidden: {
+      type: Boolean,
+      default: false
     }
   },
-  emits: ['set-active'],
+  emits: ['setActive'],
   setup(props,context) {
     const onItemClick = (id: string) => {
-      context.emit('set-active', id);
+      context.emit('setActive', id);
     }
     return {
       onItemClick

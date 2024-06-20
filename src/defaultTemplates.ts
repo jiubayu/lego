@@ -6,17 +6,11 @@ const defaultTextTemplates = [
     fontWeight: 'bold',
     tag: 'h2',
     width: '100px',
-    top: '40px',
-    isHidden: false,
-    isLocked: false,
   },
   {
     text: '正文内容',
     tag: 'p',
     width: '100px',
-    top: '100px',
-    isHidden: false,
-    isLocked: false,
   },
   {
     text: '链接内容',
@@ -24,9 +18,6 @@ const defaultTextTemplates = [
     textDecoration: 'underline',
     tag: 'p',
     width: '150px',
-    top: '140px',
-    isHidden: false,
-    isLocked: false,
   },
   {
     text: '按钮内容',
@@ -44,9 +35,6 @@ const defaultTextTemplates = [
     tag: 'button',
     textAlign: 'center',
     position: 'absolute',
-    top: '200px',
-    isHidden: false,
-    isLocked: false,
   },
 ];
 export default defaultTextTemplates.map(template => ({ ...textDefaultProps, ...template }))

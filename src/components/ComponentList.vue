@@ -1,6 +1,13 @@
 <template>
   <div class="create-componnet-list">
-    <l-text v-for="(item, index) in list" :key="index" v-bind="item" @click="onItemClick(item)"></l-text>
+    <div
+      class="component-item"
+      v-for="(item, index) in list"
+      :key="index"
+      @click="onItemClick(item)"
+    >
+      <l-text v-bind="item"></l-text>
+    </div>
   </div>
   <styled-uploader @success="onImageUploaded"></styled-uploader>
 </template>
@@ -9,15 +16,15 @@ import {PropType, defineComponent} from 'vue';
 import {TextComponentProps, imageDefaultProps} from '@/defaultProps';
 import LText from './LText.vue';
 import StyledUploader from './StyledUploader.vue';
-import { RespUploadData } from '@/store/respTypes';
-import { ComponentData } from '@/store/editor';
-import { v4 as uuidv4} from 'uuid';
-import { message } from 'ant-design-vue';
+import {RespUploadData} from '@/store/respTypes';
+import {ComponentData} from '@/store/editor';
+import {v4 as uuidv4} from 'uuid';
+import {message} from 'ant-design-vue';
 export default defineComponent({
   name: 'ComponentList',
   components: {
     LText,
-    StyledUploader
+    StyledUploader,
   },
   props: {
     list: {
@@ -28,28 +35,28 @@ export default defineComponent({
   emits: ['on-item-click'],
   setup(props, context) {
     const onItemClick = (data: any) => {
-      console.log(data, 'data----')
+      console.log(data, 'data----');
       context.emit('on-item-click', data);
-    }
-    const onImageUploaded = (data: { resp: RespUploadData, file: File }) => {
-      const { resp, file } = data;
+    };
+    const onImageUploaded = (data: {resp: RespUploadData; file: File}) => {
+      const {resp, file} = data;
       const componentData: ComponentData = {
         name: 'l-image',
         id: uuidv4(),
         props: {
-          ...imageDefaultProps
-        }
-      }
+          ...imageDefaultProps,
+        },
+      };
       message.success('上传成功');
-      componentData.props.src = resp.data.urls[0];
-      context.emit("on-item-click", componentData);
-      console.log(resp, 'resp---')
-    }
+      componentData.props.imageSrc = resp.data.urls[0];
+      context.emit('on-item-click', componentData);
+      console.log(resp, 'resp---');
+    };
     return {
       onItemClick,
-      onImageUploaded
-    }
-  }
+      onImageUploaded,
+    };
+  },
 });
 </script>
 <style>

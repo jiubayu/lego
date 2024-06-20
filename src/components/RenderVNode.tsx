@@ -7,9 +7,12 @@ const RenderVnode = defineComponent({
       required: true,
     },
   },
-  render() {
-    return this.vNode;
-  },
+  // render() {
+  //   return this.vNode;
+  // },
+  setup(props) {
+    return () => props.vNode;
+  }
 });
 
 export default RenderVnode;

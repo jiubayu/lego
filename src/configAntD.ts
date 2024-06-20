@@ -1,13 +1,17 @@
 // import all used components in whole projects
 
-import { Avatar, Button, Spin, Modal, Drawer, Card, Tag,
-  Layout, Tabs, Menu, Row, Col, 
-  Form, Dropdown, Input, InputNumber, Slider, Radio, Select } from 'ant-design-vue'
+import { Avatar, Button,Collapse ,Spin,Tooltip, Modal, Drawer, Card, Tag,
+  Layout, Tabs, Menu, Row, Col, Empty,
+  Form, Dropdown, Input, InputNumber, Slider, Radio, Select, 
+  CollapsePanel} from 'ant-design-vue'
 import { App } from 'vue'
 const components = [
   Avatar,
   Button,
+  Collapse,
+  CollapsePanel,
   Spin,
+  Tooltip,
   Modal,
   Drawer,
   Card,
@@ -24,6 +28,7 @@ const components = [
   Menu.Item,
   Row,
   Col,
+  Empty,
   Form,
   Form.Item,
   Dropdown,

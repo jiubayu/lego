@@ -45,3 +45,22 @@ export const getElement = (element: HTMLElement, className: string) => {
 
   return null;
 };
+
+export const insertAt = (arr:any[], index:number, newItem: any) => {
+  return [
+    ...arr.slice(0, index),
+    newItem,
+    ...arr.slice(index),
+  ]
+}
+
+// 防抖
+export function debounce(fn: (...args:any) => void, delay: number = 1000) {
+  let timer;
+  return (...args:any) => {
+    if (timer) clearTimeout(timer);
+    timer = setTimeout(() => {
+      fn.apply(this, args);
+    }, delay);
+  }
+}

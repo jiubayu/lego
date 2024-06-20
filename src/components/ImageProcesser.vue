@@ -1,8 +1,8 @@
 <template>
   <div class="image-processer">
-    <a-modle
+    <a-modal
       title="裁剪图片"
-      :visbile="showModal"
+      v-model:visible="showModal"
       @ok="handleOk"
       @cancel="showModal = false"
       okText="确认"
@@ -11,7 +11,7 @@
       <div class="image-cropper">
         <img :src="baseImageUrl" id="processed-image" ref="cropperImg" />
       </div>
-    </a-modle>
+    </a-modal>
     <div
       class="image-preview"
       :style="{backgroundImage: backgroundUrl}"
@@ -166,6 +166,6 @@ export default defineComponent({
 .image-cropper img {
   display: block;
   /* This rule is very important, please don't ignore this */
-  max-width: 100%;
+  max-width: 150px;
 }
 </style>

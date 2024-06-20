@@ -17,7 +17,7 @@
               :key="key"
               :value="item.value"
             >
-              <render-vnode :vNode="item.label"></render-vnode>
+              <render-vnode :vNode="item.text"></render-vnode>
               <!-- {{ item.label }} -->
             </component>
           </template>
@@ -33,6 +33,10 @@ import {reduce} from 'lodash-es';
 import {mapPropsToForms, PropsToForms} from '@/propsMap';
 import RenderVNode from './RenderVNode';
 import ColorPicker from './ColorPicker.vue';
+import ImageProcesser from './ImageProcesser.vue';
+import BackgroundProcesser from './BackgroundProcesser.vue';
+import IconSwitch from './IconSwitch.vue'
+import { AllComponentProps } from 'lego-birks';
 
 interface FormProps {
   component: string;
@@ -40,7 +44,7 @@ interface FormProps {
   value: string;
   extraProps?: {[key: string]: any};
   text?: string;
-  options?: {label: string | VNode; value: any}[];
+  options?: {text: string | VNode; value: any}[];
   valueProp?: string;
   eventName?: string;
   events: {[key: string]: (e: any) => void};
@@ -50,10 +54,13 @@ export default defineComponent({
   components: {
     RenderVNode,
     ColorPicker,
+    ImageProcesser,
+    BackgroundProcesser,
+    IconSwitch
   },
   props: {
     props: {
-      type: Object as PropType<TextComponentProps>,
+      type: Object as PropType<AllComponentProps>,
       required: true,
     },
   },
@@ -92,7 +99,6 @@ export default defineComponent({
         {} as {[key: string]: FormProps}
       );
     });
-    console.log(finalProps.value, 'value----');
     return {
       finalProps,
     };

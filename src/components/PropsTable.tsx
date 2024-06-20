@@ -19,7 +19,7 @@ interface FormProps {
   value: string;
   extraProps?: {[key: string]: any};
   text?: string;
-  options?: {label: string | VNode; value: any}[];
+  options?: {text: string | VNode; value: any}[];
   valueProp?: string;
   eventName?: string;
   events: {[key: string]: (e: any) => void};
@@ -89,7 +89,7 @@ export default defineComponent({
                   <ComponentName {...props}>
                     {
                       value.options && value.options.map((option, key: number) => {
-                        return <SubComponent value={option.value}>{ option.label}</SubComponent>;
+                        return <SubComponent value={option.value}>{ option.text}</SubComponent>;
                       })
                     }
                   </ComponentName>
